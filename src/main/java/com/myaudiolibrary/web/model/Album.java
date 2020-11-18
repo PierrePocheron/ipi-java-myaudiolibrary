@@ -1,8 +1,14 @@
 package com.myaudiolibrary.web.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "album")
@@ -10,29 +16,31 @@ public class Album {
 
 
     //Attributs Privés
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long albumId;
 
     @Column(name = "Title")
     private String title;
 
-    @Column(name = "ArtistId")
-    private Long artistId;
+    @ManyToOne
+    @JoinColumn(name = "ArtistId")
+    private Artist artist;
+
 
 
 
     //Constructeur
     public Album() {
     }
-    public Album(Long albumId, String title, Long artistId) {
+
+
+    public Album(Long albumId, String title, Artist artist) {
         this.albumId = albumId;
         this.title = title;
-        this.artistId = artistId;
+        this.artist = artist;
     }
-
-
-
 
     //Getter - Setter
     public Long getAlbumId() {
@@ -51,14 +59,13 @@ public class Album {
         this.title = title;
     }
 
-    public Long getArtistId() {
-        return artistId;
+    public Artist getArtist() {
+        return artist;
     }
 
-    public void setArtistId(Long artistId) {
-        this.artistId = artistId;
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -67,12 +74,12 @@ public class Album {
         Album album = (Album) o;
         return Objects.equals(getAlbumId(), album.getAlbumId()) &&
                 Objects.equals(getTitle(), album.getTitle()) &&
-                Objects.equals(getArtistId(), album.getArtistId());
+                Objects.equals(getArtist(), album.getArtist());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAlbumId(), getTitle(), getArtistId());
+        return Objects.hash(getAlbumId(), getTitle(), getArtist());
     }
 
     @Override
@@ -80,7 +87,7 @@ public class Album {
         return "Album{" +
                 "albumId=" + albumId +
                 ", title='" + title + '\'' +
-                ", artistId=" + artistId +
+                ", artist=" + artist +
                 '}';
     }
 }

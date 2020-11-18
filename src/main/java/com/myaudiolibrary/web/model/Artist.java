@@ -1,7 +1,10 @@
 package com.myaudiolibrary.web.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,12 +13,18 @@ public class Artist {
 
 
     //Attributs Privés
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long artistId;
 
     @Column(name = "Name")
     private String name;
+
+    //Relation avec Artiste
+    @OneToMany(mappedBy = "artist")
+    @JsonIgnoreProperties("artist")
+    private List<Album> albums;
 
 
     //Constructeur
