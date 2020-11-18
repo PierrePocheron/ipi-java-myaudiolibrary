@@ -25,20 +25,22 @@ public class MyRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("====================");
         System.out.println("Salut les devs, Bienvenue dans mon Application Web Java ! ");
+        System.out.println("Le Server a bien démarrer correctement ");
         System.out.println("====================\n");
 
 
-        System.out.println("====================");
-        Artist ar1 = artistRepository.findByArtistId(10L);
-        System.out.println(ar1.toString());
-        System.out.println("====================\n");
+//        System.out.println("====================");
+//        Artist ar1 = artistRepository.findByArtistId(10L);
+//        System.out.println(ar1.toString());
+//        System.out.println("====================\n");
 
-        System.out.println("====================");
-        List<Album> albumList = albumRepository.findAll();
-        for(Album album : albumList){
-            System.out.println(album.toString());
-        }
-        System.out.println("====================\n");
+//        System.out.println("====================");
+//        List<Album> albumList = albumRepository.findAll();
+//        for(Album album : albumList){
+//            System.out.println(album.toString());
+//        }
+//        System.out.println("====================\n");
+
 
     }
     public static void print(Object t) {
