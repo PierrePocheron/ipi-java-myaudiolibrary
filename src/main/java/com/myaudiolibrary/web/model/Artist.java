@@ -22,7 +22,7 @@ public class Artist {
     private String name;
 
     //Relation avec Artiste
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnoreProperties("artist")
     private List<Album> albums;
 

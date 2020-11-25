@@ -99,7 +99,7 @@ public class ArtistController {
     {
         if(artistRepository.findById(artist.getArtistId()) !=null)
         {
-            throw new EntityExistsException("Il y a deja un employé de matricule" + artist.getArtistId());
+            throw new EntityExistsException("Il y a deja un artist d'id : " + artist.getArtistId());
         }
         return artistRepository.save(artist);
     }
@@ -107,10 +107,25 @@ public class ArtistController {
 
     //POST http://localhost:5366/artists
     //Modification d'un artist
+    //Retourne un Artiste
+    @PutMapping(value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Artist updateArtiste(@RequestBody Artist artist)
+    {
+        return artistRepository.save(artist);
+    }
 
 
-    //DELETE http://localhost:5366/artists/5
+    //DELETE http://localhost:5366/artists/275
     //Suppression d'un artist
+    @RequestMapping(method = RequestMethod.DELETE,
+            value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)//204
+    public void deleteArtist(@PathVariable Long id)
+    {
+        artistRepository.deleteById(id);
+    }
 
 
 }

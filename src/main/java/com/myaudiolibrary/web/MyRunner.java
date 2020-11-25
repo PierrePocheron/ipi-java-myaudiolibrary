@@ -33,7 +33,7 @@ public class MyRunner implements CommandLineRunner {
 //        Artist ar1 = artistRepository.findByArtistId(10L);
 //        System.out.println(ar1.toString());
 //        System.out.println("====================\n");
-
+//
 //        System.out.println("====================");
 //        List<Album> albumList = albumRepository.findAll();
 //        for(Album album : albumList){
