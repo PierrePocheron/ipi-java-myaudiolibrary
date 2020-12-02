@@ -53,7 +53,8 @@ public class AlbumController {
         }
 
         //Gestion Erreur :  404 not found
-        if(albumRepository.findById(id) == null)
+        Optional<Album> album = albumRepository.findById(id);
+        if(album.isEmpty())
         {
             throw new EntityNotFoundException("Il n'y a pas d'album d'id : " + id);
         }
