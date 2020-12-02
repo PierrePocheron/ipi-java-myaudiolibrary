@@ -24,13 +24,16 @@ public class AlbumController {
 
 
     //POST http://localhost:5366/albums
-    //Ajout d'un album a un artist
-    //gerer les exceptions
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,produces =
             MediaType.APPLICATION_JSON_VALUE)
     public Album createAlbum(@RequestBody Album album)
     {
+        //Gestion Erreur
+        if(album.getTitle().isBlank())
+        {
+            throw new IllegalArgumentException("Le nom de l'album n'est pas renseigné");
+        }
         return albumRepository.save(album);
     }
 
@@ -38,8 +41,6 @@ public class AlbumController {
 
 
     // DELETE http://localhost:5366/albums/x
-    //Suppression d'un album
-    //gerer //500
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)//204
