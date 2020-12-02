@@ -146,7 +146,6 @@ public class ArtistController {
         artistRepository.deleteById(id);
     }
 
-
     // ADD Tymeleaf routes au projet
 //    @Controller
 //    @RequestMapping(value = "/thymeleaf")
@@ -154,6 +153,5 @@ public class ArtistController {
 //    {
 //        // toute les @request ici auraont dabord Thymeleaf/le-reste-de-la-route
 //    }
-
 
 }
