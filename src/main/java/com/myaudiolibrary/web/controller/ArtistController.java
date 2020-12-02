@@ -111,8 +111,14 @@ public class ArtistController {
     @PutMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Artist updateArtiste(@RequestBody Artist artist)
+    public Artist updateArtiste(@RequestBody Artist artist,
+                                @PathVariable Integer id)
     {
+        //Gestion Erreur : 404  Name non renseigné
+        if(artist.getName().isBlank())
+        {
+            throw new IllegalArgumentException("Le paramètre name doit être renseigné !");
+        }
         return artistRepository.save(artist);
     }
 
@@ -125,7 +131,7 @@ public class ArtistController {
     @ResponseStatus(HttpStatus.NO_CONTENT)//204
     public void deleteArtist(@PathVariable Long id)
     {
-        //Gestion id < 1
+        //Gestion Erreur : id < 1
         if (id < 1)
         {
             throw new IllegalArgumentException("L'id de l'artiste doit être égal ou supérieur à 1" );

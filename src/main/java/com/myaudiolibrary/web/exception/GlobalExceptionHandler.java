@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
         return e.getMessage();
     }
 
+    //Gestion Erreur :
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleIllegalArgumentException(IllegalArgumentException e)
@@ -28,6 +29,7 @@ public class GlobalExceptionHandler {
         return e.getMessage();
     }
 
+    //Gestion Erreur :
     @ExceptionHandler(EntityExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public String handleEntityExistsException(EntityExistsException e)
