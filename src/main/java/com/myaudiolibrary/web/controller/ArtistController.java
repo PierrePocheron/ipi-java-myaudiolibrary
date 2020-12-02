@@ -86,17 +86,16 @@ public class ArtistController {
 
     }
 
-    //Création d'un Artiste
-    //Retourne un Artiste
+
     // POST http://localhost:5366/artists
     @RequestMapping(value = "",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    //Renvoie un code Http 201 pour la création
     @ResponseStatus(HttpStatus.CREATED)
     public Artist createArtist(@RequestBody Artist artist)
     {
+        //Gestion Erreur
         if(artistRepository.findById(artist.getArtistId()) !=null)
         {
             throw new EntityExistsException("Il y a deja un artist d'id : " + artist.getArtistId());
@@ -106,8 +105,7 @@ public class ArtistController {
 
 
     //POST http://localhost:5366/artists
-    //Modification d'un artist
-    //Retourne un Artiste
+
     @PutMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -145,13 +143,4 @@ public class ArtistController {
         }
         artistRepository.deleteById(id);
     }
-
-    // ADD Tymeleaf routes au projet
-//    @Controller
-//    @RequestMapping(value = "/thymeleaf")
-//    public class ThymeleafController
-//    {
-//        // toute les @request ici auraont dabord Thymeleaf/le-reste-de-la-route
-//    }
-
 }
