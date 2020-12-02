@@ -7,6 +7,7 @@ import com.myaudiolibrary.web.repository.AlbumRepository;
 import com.myaudiolibrary.web.repository.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
@@ -25,6 +26,13 @@ public class AlbumController {
     //POST http://localhost:5366/albums
     //Ajout d'un album a un artist
     //gerer les exceptions
+    @RequestMapping(method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,produces =
+            MediaType.APPLICATION_JSON_VALUE)
+    public Album createAlbum(@RequestBody Album album)
+    {
+        return albumRepository.save(album);
+    }
 
 
 
