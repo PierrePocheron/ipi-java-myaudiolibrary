@@ -117,6 +117,7 @@ public class ArtistController {
     }
 
 
+
     //DELETE http://localhost:5366/artists/275
     //Suppression d'un artist
     @RequestMapping(method = RequestMethod.DELETE,
@@ -124,8 +125,29 @@ public class ArtistController {
     @ResponseStatus(HttpStatus.NO_CONTENT)//204
     public void deleteArtist(@PathVariable Long id)
     {
+        //Gestion id < 1
+        if (id < 1)
+        {
+            throw new IllegalArgumentException("L'id de l'artiste doit être égal ou supérieur à 1" );
+        }
+
+        //Gestion Erreur :  404 not found
+        Optional<Artist> optionalArtist = artistRepository.findById(id);
+        if(optionalArtist.isEmpty())
+        {
+            throw new EntityNotFoundException("L'artiste d'indentifiant : " + id + " n'a pas été trouvé");
+        }
         artistRepository.deleteById(id);
     }
+
+
+    // ADD Tymeleaf routes au projet
+//    @Controller
+//    @RequestMapping(value = "/thymeleaf")
+//    public class ThymeleafController
+//    {
+//        // toute les @request ici auraont dabord Thymeleaf/le-reste-de-la-route
+//    }
 
 
 }

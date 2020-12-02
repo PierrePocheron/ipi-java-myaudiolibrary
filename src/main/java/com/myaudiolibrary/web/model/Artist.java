@@ -21,7 +21,7 @@ public class Artist {
     @Column(name = "Name")
     private String name;
 
-    //Relation avec Artiste
+    //Relation avec Album
     @OneToMany(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnoreProperties("artist")
     private List<Album> albums;

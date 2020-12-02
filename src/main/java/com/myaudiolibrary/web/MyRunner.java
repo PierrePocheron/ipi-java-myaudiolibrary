@@ -26,6 +26,7 @@ public class MyRunner implements CommandLineRunner {
         System.out.println("====================");
         System.out.println("Salut les devs, Bienvenue dans mon Application Web Java ! ");
         System.out.println("Le Server a bien démarrer correctement ");
+        System.out.println("Accessible a : http://localhost:5366/sayHello");
         System.out.println("====================\n");
 
 
@@ -40,6 +41,16 @@ public class MyRunner implements CommandLineRunner {
 //            System.out.println(album.toString());
 //        }
 //        System.out.println("====================\n");
+
+//        Optional<Album> optionalAlbum = albumRepository.findById(10L);
+//        System.out.println(optionalAlbum.toString());
+
+//        Artist artist = artistRepository.findByArtistId(1L);
+//        System.out.println(artist.toString());
+
+
+
+
 
 
     }
