@@ -25,7 +25,8 @@ public class MyRunner implements CommandLineRunner {
         System.out.println("====================");
         System.out.println("Salut les devs, Bienvenue dans mon Application Web Java ! ");
         System.out.println("Le Server a bien démarrer correctement ");
-        System.out.println("Accessible a : http://localhost:5366/sayHello");
+        System.out.println("Accessible a : http://localhost:5366");
+        System.out.println("Page de test : http://localhost:5366/test");
         System.out.println("====================\n");
 
 //        System.out.println("====================");
