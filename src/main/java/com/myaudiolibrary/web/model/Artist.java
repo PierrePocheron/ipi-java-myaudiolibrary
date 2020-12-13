@@ -2,6 +2,7 @@ package com.myaudiolibrary.web.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.mapping.Set;
 
 import javax.persistence.*;
 import java.util.List;
@@ -53,6 +54,7 @@ public class Artist {
     public void setName(String name) {
         this.name = name;
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -28,12 +28,13 @@ public class ArtistController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public String getArtistById(@PathVariable Long id, final ModelMap model){
 
-        Optional<Artist> ArtistOptional = artistRepository.findById(id);
-        if(ArtistOptional.isEmpty()){
+        Optional<Artist> artistOptional = artistRepository.findById(id);
+        if(artistOptional.isEmpty()){
             throw new EntityNotFoundException("L'employé d'identifiant " + id + " n'a pas été trouvé !");
         }
 
-        model.put("artist", ArtistOptional.get());
+        Artist artist = artistOptional.get();
+        model.put("artist",artist);
         return "detailArtist";
     }
 
@@ -78,12 +79,15 @@ public class ArtistController {
     }
 
 
-    /*@RequestMapping(method = RequestMethod.POST, value = "/new", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public RedirectView createOrSaveArtist(Artist artist)
+    @RequestMapping(method = RequestMethod.POST,
+                    value = "",
+                    consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String saveArtist(final ModelMap model, Artist artist)
     {
-        artist = artistRepository.save(artist);
-        return new RedirectView("/artists/" + artist.getArtistId());
-    }*/
+        artistRepository.save(artist);
+        model.put("artist",artistRepository.findByName(artist.getName()));
+        return "detailArtist";
+    }
 
 
 
