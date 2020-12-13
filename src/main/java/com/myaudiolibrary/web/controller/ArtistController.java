@@ -35,12 +35,13 @@ public class ArtistController {
 
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "", params = "matricule")
-    public String searchArtistByMatricule(@RequestParam String name, final ModelMap model){
+    @RequestMapping(method = RequestMethod.GET, value = "", params = "name")
+    public String searchArtistByName(@RequestParam String name, final ModelMap model){
         Artist artist = artistRepository.findByName(name);
         //Ici il faudrait gérer l'erreur 404 !
+
         model.put("artist", artist);
-        return "detail";
+        return "detailArtist";
     }
 
 
