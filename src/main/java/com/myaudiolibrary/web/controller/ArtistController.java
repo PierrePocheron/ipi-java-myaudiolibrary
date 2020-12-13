@@ -4,7 +4,11 @@ import com.myaudiolibrary.web.model.Artist;
 import com.myaudiolibrary.web.repository.ArtistRepository;
 import org.aspectj.util.GenericSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +46,27 @@ public class ArtistController {
 
         model.put("artist", artist);
         return "detailArtist";
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "")
+    public String listArtists(final ModelMap model,
+                              @RequestParam(defaultValue = "0") Integer page,
+                              @RequestParam(defaultValue = "10") Integer size,
+                              @RequestParam(defaultValue = "name") String sortDirection,
+                              @RequestParam(defaultValue = "ASC") String sortProperty)
+    {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortProperty);
+        Page<Artist> pageArtist = artistRepository.findAll(pageRequest);
+
+        model.put("employes", pageArtist);
+        model.put("pageNumber", page + 1);
+        model.put("previousPage", page - 1);
+        model.put("nextPage", page + 1);
+        model.put("start", page * size + 1);
+        model.put("end", (page) * size + pageArtist.getNumberOfElements());
+
+        return "listeArtists";
     }
 
 
