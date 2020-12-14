@@ -55,6 +55,13 @@ public class Artist {
         this.name = name;
     }
 
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
+    }
 
     @Override
     public boolean equals(Object o) {
