@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>IpiMdd050EvalWeb</title>
@@ -26,9 +28,9 @@
                 <li class="active"><a href="#" class="nav-link">Liste des artistes</a></li>
             </ul>
 
-            <form role="search" class="navbar-form navbar-right">
+            <form role="search" class="navbar-form navbar-right" action="http://localhost:5366/artists" method="GET">
                 <div class="form-group">
-                    <input type="text" placeholder="Rechercher par nom" class=" form-control">
+                    <input name="name" type="text" placeholder="Rechercher par nom" class="ember-text-field form-control ember-view">
                 </div>
                 <button type="submit" class="btn btn-default">Rechercher</button>
             </form>
@@ -44,66 +46,60 @@
                 <table class="table table-hover table-striped">
                     <thead>
                     <tr>
-                        <th scope="col">Nom
-                            <span class="glyphicon glyphicon-chevron-up"></span>
+                        <th scope="col">
+                            <div th:switch="${param.sortDirection.toString()}" th:if="${param.sortProperty.toString()} == 'name'">
+                            <span th:case="DESC">
+                                Nom
+                                <a th:href="@{/artists(page=${param.pageNumber}, size=${param.size}, sortDirection=ASC, sortProperty=name)}"><i class="fa fa-chevron-down">\/</i></a>
+                            </span>
+                            <span th:case="ASC">
+                                Nom
+                                <a th:href="@{/artists(page=${param.pageNumber}, size=${param.size}, sortDirection=DESC, sortProperty=name)}"><i class="fa fa-chevron-up">/\</i></a>
+                            </span>
+                            </div>
                         </th>
-                        <th scope="col"></th>
+<!--                        <th scope="col">Nom-->
+<!--                            <span class="glyphicon glyphicon-chevron-up"></span>-->
+<!--                        </th>-->
+                        <th scope="col">
+
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">A Cor Do Som</th>
-                        <td><a href="#">Détail</a></td>
+                    <tr th:each="artist : ${artists}">
+                        <th scope="row" th:text="${artist.name}">Nom Artist</th>
+                        <td><a th:href="'/artists/' + ${artist.artistId}">Détail Artist</a></td>
                     </tr>
-                    <tr>
-                        <th scope="row">Aaron Copland &amp; London Symphony Orchestra</th>
-                        <td><a href="#">Détail</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Aaron Goldberg</th>
-                        <td><a href="#">Détail</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">AC/DC</th>
-                        <td><a href="#">Détail</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Academy of St. Martin in the Fields &amp; Sir Neville Marriner</th>
-                        <td><a href="#" class="btn btn-primary">Détail</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Academy of St. Martin in the Fields Chamber Ensemble &amp; Sir Neville Marriner</th>
-                        <td><a href="#" class="btn btn-primary">Détail</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Academy of St. Martin in the Fields, John Birch, Sir Neville Marriner &amp; Sylvia McNair</th>
-                        <td><a href="#" class="btn btn-primary">Détail</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Academy of St. Martin in the Fields, Sir Neville Marriner &amp; Thurston Dart</th>
-                        <td><a href="#" class="btn btn-primary">Détail</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Academy of St. Martin in the Fields, Sir Neville Marriner &amp; William Bennett</th>
-                        <td><a href="#" class="btn btn-primary">Détail</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Accept</th>
-                        <td><a href="#" class="btn btn-primary">Détail</a></td>
-                    </tr>
+
+
                     </tbody>
                 </table>
+
+<!--                Ligne Pagination-->
+
                 <div class="row">
-                    <div class="col-lg-6"><p>Affichage des artistes 1 à 10 sur un total de 275</p>
+                    <div class="col-lg-6">
+                        <p>
+                            Affichage des artistes <span th:text="${start}">1</span> à <span th:text="${end}">10</span> sur un total de <span th:text="${artists.totalElements}">275</span>
+                        </p>
                     </div>
                     <div class="col-lg-6">
                         <ul class="pagination">
-                            <li class="disabled">
-                                <a href="#">«</a>
+                            <li class="page-item disabled" th:if="${pageNumber} == 1" >
+                                <a  class="page-link" href="#">
+                                    «
+                                </a>
                             </li>
-                            <li><a href="#">Page 1</a></li>
-                            <li class="">
-                                <a href="#">              »
+                            <li class="page-item" th:if="${pageNumber} != 1" >
+                                <a  class="page-link" th:href="@{/artists(page=${previousPage}, size=${param.size}, sortDirection=${param.sortDirection}, sortProperty=${param.sortProperty})}">
+                                    «
+                                </a>
+                            </li>
+                            <li><a href="#">Page <span th:text="${pageNumber}">1</span></a></li>
+                            <li class="page-item" th:if="${pageNumber} != ${artists.totalPages} ">
+                                <a class="page-link" th:href="@{/artists(page=${nextPage}, size=${param.size}, sortDirection=${param.sortDirection}, sortProperty=${param.sortProperty})}">
+                                    »
                                 </a>
                             </li>
                         </ul></div>

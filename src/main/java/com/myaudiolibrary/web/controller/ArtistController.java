@@ -60,7 +60,7 @@ public class ArtistController {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortProperty);
         Page<Artist> pageArtist = artistRepository.findAll(pageRequest);
 
-        model.put("employes", pageArtist);
+        model.put("artists", pageArtist);
         model.put("pageNumber", page + 1);
         model.put("previousPage", page - 1);
         model.put("nextPage", page + 1);
