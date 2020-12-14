@@ -23,7 +23,7 @@ public class Artist {
     private String name;
 
     //Relation avec Album
-    @OneToMany(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)//orphanRemoval = true
     @JsonIgnoreProperties("artist")
     private List<Album> albums;
 

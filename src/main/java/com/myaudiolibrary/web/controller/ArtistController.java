@@ -88,13 +88,21 @@ public class ArtistController {
                     consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String saveArtist(final ModelMap model, Artist artist)
     {
-        System.out.println("on sauve l'artiste ");
-        System.out.println("nom de l'artiste "+artist.getName());
-
-
+        System.out.println("add un artist");
         artistRepository.save(artist);
         model.put("artist",artistRepository.findByName(artist.getName()));
         return "detailArtist";
+    }
+
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+    public String deleteArtist(final ModelMap model, @PathVariable(value = "artistId") Long artistId)
+    {
+        System.out.println("delete un artist");
+
+        //add security 404 ....
+        artistRepository.deleteById(artistId);
+        return "accueil";
     }
 
 
