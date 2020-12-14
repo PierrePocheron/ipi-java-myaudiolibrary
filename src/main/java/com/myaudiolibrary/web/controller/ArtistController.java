@@ -72,11 +72,15 @@ public class ArtistController {
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/new")
-    public String createArtist(final ModelMap model){
+    public String newArtist(final ModelMap model)
+    {
+        System.out.println("on passe a la creation d'artist");
         Artist artist = new Artist();
         model.put("artist",artist);
         return "detailArtist";
     }
+
+
 
 
     @RequestMapping(method = RequestMethod.POST,
@@ -84,6 +88,10 @@ public class ArtistController {
                     consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String saveArtist(final ModelMap model, Artist artist)
     {
+        System.out.println("on sauve l'artiste ");
+        System.out.println("nom de l'artiste "+artist.getName());
+
+
         artistRepository.save(artist);
         model.put("artist",artistRepository.findByName(artist.getName()));
         return "detailArtist";
