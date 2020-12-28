@@ -51,16 +51,25 @@
 
 						<label th:if="${artist.getArtistId()}" for="performance" class="form-control-label">Albums</label>
 						<div class="row" th:if="${artist.getArtistId()}" th:each="album : ${artist.getAlbums()}">
-							<div class="col-lg-10">
-								<div class="list-group">
-									<li class="list-group-item" th:text="${album.title}">Titre de l'album</li>
+<!--							Probleme : Supprime forcement le premier albul de l'artist, je n'ai pas trouver de solution-->
+<!--							debug-->
+<!--							<form id="deleteAlbum" th:action="'/albums/403'">-->
+							<form id="deleteAlbum" th:action="'/albums/'+${album.albumId}">
+								<h1>[[${album.getAlbumId()}]]</h1>
+								<div class="col-lg-10">
+									<div class="list-group">
+										<li class="list-group-item">[[${album.getTitle()}]]</li>
+<!--										debug-->
+<!--										<li class="list-group-item">[[${album.getAlbumId()}]]</li>-->
+									</div>
 								</div>
-							</div>
-							<div class="col-lg-2 text-center">
-								<div class="list-group text-center">
-									<button class="btn-danger list-group-item list-group-item-action"><span class="glyphicon glyphicon-remove"></span></button>
+								<div class="col-lg-2 text-center">
+									<div class="list-group text-center">
+										<input name="artist" type="hidden" th:value="${artist.getArtistId()}">
+										<button form="deleteAlbum" type="submit" class="btn-danger list-group-item list-group-item-action"><span class="glyphicon glyphicon-remove"></span></button>
+									</div>
 								</div>
-							</div>
+							</form>
 						</div>
 
 						<div class="row" th:if="${artist.getArtistId()}">
