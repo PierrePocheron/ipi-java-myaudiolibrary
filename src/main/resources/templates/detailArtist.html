@@ -65,10 +65,15 @@
 
 						<div class="row" th:if="${artist.getArtistId()}">
 							<div class="col-lg-10">
-								<input type="text" placeholder="Ajouter un album..." class="form-control ember-text-field ember-view">
+								<input form="form-album" name="title" type="text" placeholder="Ajouter un album..." class="form-control ember-text-field ember-view" maxlength="150" required >
 							</div>
 							<div class="col-lg-2 text-center">
-								<button class="btn-success list-group-item list-group-item-action"><span class="glyphicon glyphicon-plus"></span></button>
+								<form id="form-album" th:action="'/albums'" th:method="post">
+									<input hidden="hidden" name="artist" th:value="${artist.getArtistId()}">
+									<button class="btn-success list-group-item list-group-item-action">
+										<span class="glyphicon glyphicon-plus"></span>
+									</button>
+								</form>
 
 							</div>
 						</div>
