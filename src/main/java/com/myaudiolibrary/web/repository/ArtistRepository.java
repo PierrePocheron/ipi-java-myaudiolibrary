@@ -10,4 +10,5 @@ public interface ArtistRepository extends PagingAndSortingRepository<Artist,Long
     Artist findByArtistId(Long id);
     Artist findByName(String name);
     Page<Artist> findAllByNameIgnoreCase(String name, Pageable pageable);
+    Boolean existsByNameIgnoreCase(String name);
 }

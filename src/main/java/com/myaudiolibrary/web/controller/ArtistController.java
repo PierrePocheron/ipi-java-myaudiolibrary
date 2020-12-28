@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.awt.*;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class ArtistController {
 
         Optional<Artist> artistOptional = artistRepository.findById(id);
         if(artistOptional.isEmpty()){
-            throw new EntityNotFoundException("L'employé d'identifiant " + id + " n'a pas été trouvé !");
+            throw new EntityNotFoundException("L'artist d'identifiant " + id + " n'a pas été trouvé !");
         }
 
         Artist artist = artistOptional.get();
@@ -57,6 +58,19 @@ public class ArtistController {
                               @RequestParam(defaultValue = "name") String sortDirection,
                               @RequestParam(defaultValue = "ASC") String sortProperty)
     {
+        //Gestion Erreur : 400
+        if (page < 0)
+        {
+            throw new IllegalArgumentException("Le paramètre page doit etre positif");
+        }
+        if (size <= 0 || size > 50)
+        {
+            throw new IllegalArgumentException("Le paramètre size doit être compris entre 0 et 50");
+        }
+        if(!("ASC".equalsIgnoreCase(sortDirection)) && !("DESC".equalsIgnoreCase(sortDirection))){
+            throw new IllegalArgumentException("Le paramètre sortDirection doit valoir ASC ou DESC");
+        }
+
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortProperty);
         Page<Artist> pageArtist = artistRepository.findAll(pageRequest);
 
@@ -72,10 +86,8 @@ public class ArtistController {
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/new")
-    public String newArtist(final ModelMap model)
+    public String newArtist(final ModelMap model, Artist artist)
     {
-        System.out.println("on passe a la creation d'artist");
-        Artist artist = new Artist();
         model.put("artist",artist);
         return "detailArtist";
     }
@@ -88,7 +100,10 @@ public class ArtistController {
                     consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String saveArtist(final ModelMap model, Artist artist)
     {
-        System.out.println("add un artist");
+        if(artistRepository.existsByNameIgnoreCase(artist.getName()))
+        {
+            throw new EntityExistsException("Il y a deja un artist qui s'appel : " + artist.getName());
+        }
         artistRepository.save(artist);
         model.put("artist",artistRepository.findByName(artist.getName()));
         return "detailArtist";
@@ -100,6 +115,19 @@ public class ArtistController {
     public RedirectView deleteArtist(@PathVariable(value = "artistId") Long artistId, final ModelMap artistMap){
 
         //add security 404 ....
+        if (artistId < 1)
+        {
+            throw new IllegalArgumentException("L'id de l'artiste doit être supérieur à 0" );
+        }
+
+
+        Optional<Artist> optionalArtist = artistRepository.findById(artistId);
+        if(optionalArtist.isEmpty())
+        {
+            throw new EntityNotFoundException("L'artist d'indentifiant : " + artistId + " n'a pas été trouvé");
+        }
+
+
         artistRepository.deleteById(artistId);
         return new RedirectView("/artists?page=0&size=10&sortProperty=name&sortDirection=ASC");
     }
