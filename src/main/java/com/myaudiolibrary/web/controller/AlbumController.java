@@ -25,7 +25,14 @@ public class AlbumController {
     @RequestMapping(method = RequestMethod.POST, value = "", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public RedirectView newAlbum(final ModelMap model, Album album)
     {
-        //VERIFICATIONSS 404 etc
+        if(album.getTitle().isEmpty()){
+            throw new IllegalArgumentException("Vous ne pouvez pas créer un album sans renseigner le nom");
+        }
+
+        if(album.getArtist() == null){
+            throw new IllegalArgumentException("L'artist n'existe pas");
+        }
+
         albumRepository.save(album);
         model.put("artist",album.getArtist());
         return new RedirectView("/artists/"+album.getArtist().getArtistId());
