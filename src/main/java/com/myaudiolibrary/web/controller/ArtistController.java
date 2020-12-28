@@ -95,14 +95,13 @@ public class ArtistController {
     }
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-    public String deleteArtist(final ModelMap model, @PathVariable(value = "artistId") Long artistId)
-    {
-        System.out.println("delete un artist");
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{artistId}/delete")
+    public RedirectView deleteArtist(@PathVariable(value = "artistId") Long artistId, final ModelMap artistMap){
 
         //add security 404 ....
         artistRepository.deleteById(artistId);
-        return "accueil";
+        return new RedirectView("/artists?page=0&size=10&sortProperty=name&sortDirection=ASC");
     }
 
 

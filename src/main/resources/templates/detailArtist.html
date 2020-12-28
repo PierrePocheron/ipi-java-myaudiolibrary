@@ -62,6 +62,7 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="row" th:if="${artist.getArtistId()}">
 							<div class="col-lg-10">
 								<input type="text" placeholder="Ajouter un album..." class="form-control ember-text-field ember-view">
@@ -77,7 +78,16 @@
 			<div class="row">
 				<form th:if="!${artist.getArtistId()}" id="form-save"  th:action="'/artists'" th:method="post"><button type="submit"  class="btn btn-primary">Enregistrer</button></form>
 				<form th:if="${artist.getArtistId()}" id="form-save" th:action="'/artists/'+${artist.getArtistId()}" th:method="put"><button type="submit"  class="btn btn-primary">Enregistrer</button></form>
-				<form th:if="${artist.getArtistId()}" th:action="'/artists/'+${artist.getArtistId()}" th:method="delete"><button type="submit" class="btn btn-danger"  >Supprimer</button></form>
+
+
+				<!--	Btn supprimer un artist	-->
+				<!--<form th:if="${artist.getArtistId()}" th:action="'/artists/'+${artist.getArtistId()}" th:method="delete">
+					<button type="submit" class="btn btn-danger">Supprimer un artist</button>
+				</form>-->
+
+				<a class="btn btn-danger" th:href="'/artists/'+${artist.getArtistId()}+'/delete'">Supprimer</a>
+
+
 			</div>
 		</div>
 	</div>
