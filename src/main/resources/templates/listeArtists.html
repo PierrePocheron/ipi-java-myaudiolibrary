@@ -25,7 +25,7 @@
 
         <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#" class="nav-link">Liste des artistes</a></li>
+                <li class="active"><a href="/artists?page=0&size=10&sortProperty=name&sortDirection=ASC" class="nav-link">Liste des artistes</a></li>
             </ul>
 
             <form role="search" class="navbar-form navbar-right" action="http://localhost:5366/artists" method="GET">
@@ -44,39 +44,37 @@
                 <h1>Liste des artistes</h1>
                 <a href="http://localhost:5366/artists/new" class="btn btn-primary">Nouvel artiste</a>
                 <table class="table table-hover table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col">
-                            <div th:switch="${param.sortDirection.toString()}" th:if="${param.sortProperty.toString()} == 'name'">
-                            <span th:case="DESC">
-                                Nom
-                                <a th:href="@{/artists(page=${param.pageNumber}, size=${param.size}, sortDirection=ASC, sortProperty=name)}"><i class="fa fa-chevron-down">\/</i></a>
-                            </span>
-                            <span th:case="ASC">
-                                Nom
-                                <a th:href="@{/artists(page=${param.pageNumber}, size=${param.size}, sortDirection=DESC, sortProperty=name)}"><i class="fa fa-chevron-up">/\</i></a>
-                            </span>
-                            </div>
-                        </th>
-<!--                        <th scope="col">Nom-->
-<!--                            <span class="glyphicon glyphicon-chevron-up"></span>-->
-<!--                        </th>-->
-                        <th scope="col">
+                        <!--Partie permetant de gérer le paramètre SortProperty
+                            Fontionne pour la liste de tous les artists
+                            Mais pas pour la liste des artist avec une recherche par nom
+                            Je l'ai donc désactivé car ce n'était pas demandé-->
+<!--                    <thead>-->
+<!--                        <tr>-->
+<!--                            <th scope="col">-->
+<!--                                <div th:switch="${param.sortDirection.toString()}" th:if="${param.sortProperty.toString()} == 'name'">-->
+<!--                                <span th:case="DESC">-->
+<!--                                    Nom-->
+<!--                                    <a th:href="@{/artists(page=${param.pageNumber}, size=${param.size}, sortDirection=ASC, sortProperty=name)}"><i class="fa fa-chevron-down">\/</i></a>-->
+<!--                                </span>-->
+<!--                                <span th:case="ASC">-->
+<!--                                    Nom-->
+<!--                                    <a th:href="@{/artists(page=${param.pageNumber}, size=${param.size}, sortDirection=DESC, sortProperty=name)}"><i class="fa fa-chevron-up">/\</i></a>-->
+<!--                                </span>-->
+<!--                                </div>-->
+<!--                            </th>-->
+<!--                        </tr>-->
+<!--                    </thead>-->
 
-                        </th>
-                    </tr>
-                    </thead>
+<!--                    Affichage des différents artists -->
                     <tbody>
-                    <tr th:each="artist : ${artists}">
-                        <th scope="row" th:text="${artist.name}">Nom Artist</th>
-                        <td><a th:href="'/artists/' + ${artist.artistId}">Détail</a></td>
-                    </tr>
-
-
+                        <tr th:each="artist : ${artists}">
+                            <th scope="row" th:text="${artist.name}">Nom Artist</th>
+                            <td><a th:href="'/artists/' + ${artist.artistId}">Détail</a></td>
+                        </tr>
                     </tbody>
                 </table>
 
-<!--                Ligne Pagination-->
+<!--                Row Pagination-->
 
                 <div class="row">
                     <div class="col-lg-6">

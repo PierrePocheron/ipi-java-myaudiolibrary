@@ -9,6 +9,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ArtistRepository extends PagingAndSortingRepository<Artist,Long>{
     Artist findByArtistId(Long id);
     Artist findByName(String name);
-    Page<Artist> findAllByNameIgnoreCase(String name, Pageable pageable);
+    Page<Artist> findAllByNameContaining(String name, Pageable pageable);
     Boolean existsByNameIgnoreCase(String name);
 }

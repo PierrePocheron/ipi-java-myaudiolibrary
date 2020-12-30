@@ -26,6 +26,9 @@ public class ArtistController {
     @Autowired
     private ArtistRepository artistRepository;
 
+    ///////////////////////////
+    ////    Detail Artist
+    ///////////////////////////
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public String getArtistById(@PathVariable Long id, final ModelMap model){
 
@@ -39,18 +42,51 @@ public class ArtistController {
         return "detailArtist";
     }
 
+    ///////////////////////////
+    ////    Afficher Artist by Name
+    ///////////////////////////
+    @RequestMapping(method = RequestMethod.GET, value = "", params = {"name"})
+    public String searchArtistByName(@RequestParam(value = "name") String name,
+                                     @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                     @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                     @RequestParam(value = "sortProperty", defaultValue = "name") String sortProperty,
+                                     @RequestParam(value = "sortDirection", defaultValue = "ASC") String sortDirection,
+                                     final ModelMap model)
+    {
+        if (page < 0)
+        {
+            throw new IllegalArgumentException("Le paramètre page doit etre positif");
+        }
+        if (size <= 0 || size > 50)
+        {
+            throw new IllegalArgumentException("Le paramètre size doit être compris entre 0 et 50");
+        }
+        if(!("ASC".equalsIgnoreCase(sortDirection)) && !("DESC".equalsIgnoreCase(sortDirection)))
+        {
+            throw new IllegalArgumentException("Le paramètre sortDirection doit valoir ASC ou DESC");
+        }
 
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortProperty);
+        Page<Artist> artistList= artistRepository.findAllByNameContaining(name, pageRequest);
 
-    @RequestMapping(method = RequestMethod.GET, value = "", params = "name")
-    public String searchArtistByName(@RequestParam String name, final ModelMap model){
-        Artist artist = artistRepository.findByName(name);
-        //Ici il faudrait gérer l'erreur 404 !
+        model.put("size", size);
+        model.put("sortProperty", sortProperty);
+        model.put("sortDirection", sortDirection);
+        model.put("pageNumber", page + 1);
+        model.put("previousPage", page - 1);
+        model.put("nextPage", page + 1);
+        model.put("start", page * size + 1);
+        model.put("end", (page)*size + artistList.getNumberOfElements());
+        model.put("artists", artistList);
 
-        model.put("artist", artist);
-        return "detailArtist";
+        return "listeArtists";
     }
 
 
+
+    ///////////////////////////
+    ////    Afficher All Artist
+    ///////////////////////////
     @RequestMapping(method = RequestMethod.GET, value = "")
     public String listArtists(final ModelMap model,
                               @RequestParam(defaultValue = "0") Integer page,
@@ -67,7 +103,8 @@ public class ArtistController {
         {
             throw new IllegalArgumentException("Le paramètre size doit être compris entre 0 et 50");
         }
-        if(!("ASC".equalsIgnoreCase(sortDirection)) && !("DESC".equalsIgnoreCase(sortDirection))){
+        if(!("ASC".equalsIgnoreCase(sortDirection)) && !("DESC".equalsIgnoreCase(sortDirection)))
+        {
             throw new IllegalArgumentException("Le paramètre sortDirection doit valoir ASC ou DESC");
         }
 
@@ -85,6 +122,9 @@ public class ArtistController {
     }
 
 
+    ///////////////////////////
+    ////   Créer Artist
+    ///////////////////////////
     @RequestMapping(method = RequestMethod.GET, value = "/new")
     public String newArtist(final ModelMap model, Artist artist)
     {
@@ -94,7 +134,9 @@ public class ArtistController {
 
 
 
-
+    ///////////////////////////
+    ////   Modifier Artist
+    ///////////////////////////
     @RequestMapping(method = RequestMethod.POST,
                     value = "",
                     consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -109,17 +151,15 @@ public class ArtistController {
         return "detailArtist";
     }
 
-
-
+    ///////////////////////////
+    ////   Supprimer Artist
+    ///////////////////////////
     @RequestMapping(method = RequestMethod.GET, value = "/{artistId}/delete")
     public RedirectView deleteArtist(@PathVariable(value = "artistId") Long artistId, final ModelMap artistMap){
-
-        //add security 404 ....
         if (artistId < 1)
         {
             throw new IllegalArgumentException("L'id de l'artiste doit être supérieur à 0" );
         }
-
 
         Optional<Artist> optionalArtist = artistRepository.findById(artistId);
         if(optionalArtist.isEmpty())
@@ -127,11 +167,7 @@ public class ArtistController {
             throw new EntityNotFoundException("L'artist d'indentifiant : " + artistId + " n'a pas été trouvé");
         }
 
-
         artistRepository.deleteById(artistId);
         return new RedirectView("/artists?page=0&size=10&sortProperty=name&sortDirection=ASC");
     }
-
-
-
 }
