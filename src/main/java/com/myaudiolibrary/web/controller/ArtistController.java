@@ -158,7 +158,7 @@ public class ArtistController {
     {
         if(artistRepository.existsByNameIgnoreCase(artist.getName()))
         {
-            throw new EntityExistsException("L'artiste que vous essayer d'ajouter existe déjà !");
+            throw new EntityExistsException("L'artist existe déjà !");
         }
         return updateArtist(artist, model);
     }
@@ -168,7 +168,7 @@ public class ArtistController {
 
         if(artistRepository.existsByNameIgnoreCase(artist.getName()))
         {
-            throw new EntityExistsException("L'artiste que vous essayer d'ajouter existe déjà !");
+            throw new EntityExistsException("L'artist existe déjà !");
         }
         artist = artistRepository.save(artist);
         model.put("Artist", artist);
