@@ -33,6 +33,7 @@ public class ArtistController {
     public String getArtistById(@PathVariable Long id, final ModelMap model){
 
         Optional<Artist> artistOptional = artistRepository.findById(id);
+        //Gestion Erreur
         if(artistOptional.isEmpty()){
             throw new EntityNotFoundException("L'artist d'identifiant " + id + " n'a pas été trouvé !");
         }
@@ -53,6 +54,7 @@ public class ArtistController {
                                      @RequestParam(value = "sortDirection", defaultValue = "ASC") String sortDirection,
                                      final ModelMap model)
     {
+        //Gestion Erreur
         if (page < 0)
         {
             throw new IllegalArgumentException("Le paramètre page doit etre positif");
@@ -94,7 +96,7 @@ public class ArtistController {
                               @RequestParam(defaultValue = "name") String sortDirection,
                               @RequestParam(defaultValue = "ASC") String sortProperty)
     {
-        //Gestion Erreur : 400
+        //Gestion Erreur
         if (page < 0)
         {
             throw new IllegalArgumentException("Le paramètre page doit etre positif");
@@ -132,16 +134,12 @@ public class ArtistController {
         return "detailArtist";
     }
 
-
-
-    ///////////////////////////
-    ////   Modifier Artist
-    ///////////////////////////
     @RequestMapping(method = RequestMethod.POST,
                     value = "",
                     consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String saveArtist(final ModelMap model, Artist artist)
     {
+        //Gestion Erreur
         if(artistRepository.existsByNameIgnoreCase(artist.getName()))
         {
             throw new EntityExistsException("Il y a deja un artist qui s'appel : " + artist.getName());
@@ -151,11 +149,39 @@ public class ArtistController {
         return "detailArtist";
     }
 
+
+    ///////////////////////////
+    ////   Modifier Artist
+    ///////////////////////////
+    @RequestMapping(method = RequestMethod.POST, value = "/checkUpdateArtist", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public RedirectView checkUpdateArtist(Artist artist, final ModelMap model)
+    {
+        if(artistRepository.existsByNameIgnoreCase(artist.getName()))
+        {
+            throw new EntityExistsException("L'artiste que vous essayer d'ajouter existe déjà !");
+        }
+        return updateArtist(artist, model);
+    }
+
+    private RedirectView updateArtist(Artist artist, ModelMap model)
+    {
+
+        if(artistRepository.existsByNameIgnoreCase(artist.getName()))
+        {
+            throw new EntityExistsException("L'artiste que vous essayer d'ajouter existe déjà !");
+        }
+        artist = artistRepository.save(artist);
+        model.put("Artist", artist);
+        return new RedirectView("/artists/"+ artist.getArtistId());
+    }
+
+
+
     ///////////////////////////
     ////   Supprimer Artist
     ///////////////////////////
     @RequestMapping(method = RequestMethod.GET, value = "/{artistId}/delete")
-    public RedirectView deleteArtist(@PathVariable(value = "artistId") Long artistId, final ModelMap artistMap){
+    public RedirectView deleteArtist(@PathVariable(value = "artistId") Long artistId, final ModelMap model){
         if (artistId < 1)
         {
             throw new IllegalArgumentException("L'id de l'artiste doit être supérieur à 0" );
