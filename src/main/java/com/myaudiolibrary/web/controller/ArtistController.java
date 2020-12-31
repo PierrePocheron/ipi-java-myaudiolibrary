@@ -93,8 +93,8 @@ public class ArtistController {
     public String listArtists(final ModelMap model,
                               @RequestParam(defaultValue = "0") Integer page,
                               @RequestParam(defaultValue = "10") Integer size,
-                              @RequestParam(defaultValue = "name") String sortDirection,
-                              @RequestParam(defaultValue = "ASC") String sortProperty)
+                              @RequestParam(defaultValue = "name") String sortProperty,
+                              @RequestParam(defaultValue = "ASC") String sortDirection)
     {
         //Gestion Erreur
         if (page < 0)
