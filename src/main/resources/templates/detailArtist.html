@@ -8,23 +8,46 @@
 		<h2 th:if="${artist.getArtistId()}">Détail de l'artiste [[${artist.name}]]  </h2>
 		<h2 th:if="!${artist.getArtistId()}">Nouvel artiste </h2>
 
+<!--	Row : information sur l'artist	-->
+		<div class="row">
+			<form id="form-save" th:action="'/artists/checkUpdateArtist'" method="post">
+				<div class="col-lg-12">
+					<label for="name" class="form-control-label">Nom</label>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-lg-10">
+								<input name="name" type="text" id="name" class="ember-text-field form-control ember-view" required th:value="${artist.name}">
+							</div>
+							<div class="col-lg-2">
+								<!--			<form th:if="!${artist.getArtistId()}" id="form-save"  th:action="'/artists'" th:method="post"><button type="submit"  class="btn btn-primary">Créer</button></form>-->
+								<!--			<form th:if="${artist.getArtistId()}" id="form-save" th:action="'/artists/'+${artist.getArtistId()}" th:method="put"><button type="submit"  class="btn btn-primary">Modifier</button></form>-->
+								<input form="form-save" class="btn btn-success list-group-item list-group-item-action" type="submit" value="🆗">
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+
+
+<!--	Row : information sur le ou les albums de l'artist	-->
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="form-group">
-					<label for="name" class="form-control-label">Nom</label>
-					<input form="form-save" name="name" type="text" id="name" class="ember-text-field form-control ember-view" required th:value="${artist.name}">
 					<label th:if="${artist.getArtistId()}" for="performance" class="form-control-label">Albums</label>
 					<div class="row" th:if="${artist.getArtistId()}" th:each="album : ${artist.getAlbums()}">
-<!--							Probleme : Supprime forcement le premier album de l'artist, je n'ai pas trouver de solution-->
-<!--							debug-->
-<!--							<form id="deleteAlbum" th:action="'/albums/403'">-->
+<!--					Probleme : Supprime forcément le premier album de l'artist, je n'ai pas trouver de solution-->
+<!--					debug-->
+<!--					<form id="deleteAlbum" th:action="'/albums/403'">-->
 						<form id="deleteAlbum" th:action="'/albums/'+${album.albumId}">
-							<h1>[[${album.getAlbumId()}]]</h1>
+<!--							debug-->
+<!--							<h1>[[${album.getAlbumId()}]]</h1>-->
 							<div class="col-lg-10">
 								<div class="list-group">
 									<li class="list-group-item">[[${album.getTitle()}]]</li>
-<!--										debug-->
-<!--										<li class="list-group-item">[[${album.getAlbumId()}]]</li>-->
+<!--									debug-->
+<!--									<li class="list-group-item">[[${album.getAlbumId()}]]</li>-->
 								</div>
 							</div>
 							<div class="col-lg-2 text-center">
@@ -47,15 +70,12 @@
 									<span class="glyphicon glyphicon-plus"></span>
 								</button>
 							</form>
-
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<form th:if="!${artist.getArtistId()}" id="form-save"  th:action="'/artists'" th:method="post"><button type="submit"  class="btn btn-primary">Enregistrer</button></form>
-			<form th:if="${artist.getArtistId()}" id="form-save" th:action="'/artists/'+${artist.getArtistId()}" th:method="put"><button type="submit"  class="btn btn-primary">Enregistrer</button></form>
 			<a class="btn btn-danger" th:if="${artist.getArtistId()}" th:href="'/artists/'+${artist.getArtistId()}+'/delete'">Supprimer</a>
 		</div>
 	</div>
